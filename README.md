@@ -60,4 +60,53 @@ int main(int argc, char *argv[]) {
 #endif
 ```
 ### Py
+```python
+# -*- coding: utf-8 -*-
+\"\"\"
+{name}
+==============
+
+Brief desription of the program.
+
+Detailed description of the program explaining simple functions.
+
+Author: Riley Ava
+Created: {date}
+Last Modified: {date}
+Version: 1.0.0
+License: MPL 2.0
+Repository: https://github.com/RileyMeta/{name}
+
+Requirements:
+    - Python 3.10 (or newer)
+
+Usage:
+    {name} [option] FILE...
+
+Copyright (c) {year} Riley Ava
+\"\"\"
+```
 ### Makefile
+```make
+TARGET = {name}
+SRC := $(wildcard src/*.c)
+
+# Compiler and Flags
+CC = gcc
+CFLAGS = -Wall -std=c99 -Wno-missing-braces -Iinclude
+
+# Libraries and linking
+# LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+
+# Build rule
+$(TARGET): $(SRC)
+	$(CC) $(SRC) -o $(TARGET) $(CFLAGS) $(LIBS)
+
+# Clean rule
+clean:
+	rm -f $(TARGET)
+
+# Run rule
+run: $(TARGET)
+	./$(TARGET)
+```
