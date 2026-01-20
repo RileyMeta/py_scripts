@@ -19,11 +19,21 @@ python3 -m venv venv
 source venv/bin/activate
 pip install ./backend
 ```
-## Install
-I've added a simple bash script that will symlink the python file(s) to your `~/.local/bin/` directory which should allow you to execute the programs as if they were native apps (for your specific user).
+followed by a check to ensure they all use the same / correct virtual environment 'shebang (`#!`)' when running.
 ```sh
-sh install.sh
+for prog in "${PROGRAMS[@}"; do
+    echo "$shebang" > tmp_file
+    cat "$prog" >> tmp_file
+    mv tmp_file "$prog"
+done
 ```
+## Install
+I merged the bash scripts into a single file, they still symlink the python file(s) to your `~/.local/bin/` directory which should allow you to execute the programs as if they were native apps (for your specific user).
+```sh
+sh setup.sh install
+```
+> [!NOTE]
+> Do not forget, when using `~/.local/bin/` it needs to be added to your `PATH`, the install will check and warn you.
 ## Types
 - Ctouch: Create a generic C templated file
 - Htouch: Create a formatted header file
