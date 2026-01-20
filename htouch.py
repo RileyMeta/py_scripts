@@ -1,4 +1,3 @@
-#!/home/riley/.local/bin/custom_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 Htouch
