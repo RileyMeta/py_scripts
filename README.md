@@ -1,14 +1,21 @@
 # PyScripts
 These are all scripts that mimic the touch function in unix, but also create a templated file based on the type.
-
-# Setup
+# Full Install
+Complete script to setup and install at the same time
+```sh
+mkdir -p ~/.local/bin/ && cd ~/.local/bin/
+git clone https://github.com/RileyMeta/py_scripts.git
+cd py_scripts
+sh setup.sh && sh install.sh
+```
+## Setup
 There's a very simple setup script that will create a virtual environment and install the module, allowing you to symlink the files to work like a binary.
 ```sh
 git clone https://github.com/RileyMeta/py_scripts.git
 cd py_scripts
 sh setup.sh
 ```
-# Install
+## Install
 I've added a simple bash script that will symlink the python file(s) to your `~/.local/bin/` directory which should allow you to execute the programs as if they were native apps (for your specific user).
 ```sh
 sh install.sh
