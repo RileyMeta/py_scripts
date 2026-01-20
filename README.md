@@ -6,7 +6,7 @@ Complete script to setup and install at the same time
 mkdir -p ~/.local/bin/ && cd ~/.local/bin/
 git clone https://github.com/RileyMeta/py_scripts.git
 cd py_scripts
-sh setup.sh && sh install.sh
+sh setup.sh && sh setup.sh install
 ```
 ## Setup
 There's a very simple setup script that will create a virtual environment and install the module, allowing you to symlink the files to work like a binary.
