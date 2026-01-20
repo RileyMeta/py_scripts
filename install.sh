@@ -38,7 +38,6 @@ for prog in "${PROGRAMS[@]}"; do
 done
 
 echo -e "${BLUE}Installation complete!${RESET}"
-echo -e "${BLUE}Make sure ~/.local/bin is in your PATH${RESET}"
 
 # Check if ~/.local/bin is in PATH
 if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
