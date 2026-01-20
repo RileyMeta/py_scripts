@@ -8,7 +8,11 @@ git clone https://github.com/RileyMeta/py_scripts.git
 cd py_scripts
 sh setup.sh
 ```
-
+# Install
+I've added a simple bash script that will symlink the python file(s) to your `~/.local/bin/` directory which should allow you to execute the programs as if they were native apps (for your specific user).
+```sh
+sh install.sh
+```
 ## Types
 - Ctouch: Create a generic C templated file
 - Htouch: Create a formatted header file
