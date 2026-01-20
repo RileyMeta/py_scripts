@@ -11,9 +11,13 @@ sh setup.sh && sh install.sh
 ## Setup
 There's a very simple setup script that will create a virtual environment and install the module, allowing you to symlink the files to work like a binary.
 ```sh
-git clone https://github.com/RileyMeta/py_scripts.git
-cd py_scripts
 sh setup.sh
+```
+Simplified (done in the root folder):
+```sh
+python3 -m venv venv
+source venv/bin/activate
+pip install ./backend
 ```
 ## Install
 I've added a simple bash script that will symlink the python file(s) to your `~/.local/bin/` directory which should allow you to execute the programs as if they were native apps (for your specific user).
