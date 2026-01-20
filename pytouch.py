@@ -24,6 +24,7 @@ Copyright (c) 2026 Riley Ava
 """
 import os, sys
 import getopt
+from datetime import date
 from backend import FileMaker, Config
 
 def usage():
@@ -73,12 +74,44 @@ if __name__ == "__main__":
         usage()
         sys.exit(1)
 
-    FM = FileMaker("pytouch", ".py")
+    extension: str = ".py"
+    FM = FileMaker("pytouch", extension)
 
-    FM.file_template = """
-}"""
+    today = date.today()
+
+    year: str = today.year
+    date: str = today.strftime("%d/%m/%Y")
 
     for arg in args:
+        name: str = arg
+        if arg.endswith(extension):
+            name = name.replace(extension, "")
+
+        FM.file_template = f"""# -*- coding: utf-8 -*-
+\"\"\"
+{name}
+==============
+
+Brief desription of the program.
+
+Detailed description of the program explaining simple functions.
+
+Author: Riley Ava
+Created: {date}
+Last Modified: {date}
+Version: 1.0.0
+License: MPL 2.0
+Repository: https://github.com/RileyMeta/{name}
+
+Requirements:
+    - Python 3.10 (or newer)
+
+Usage:
+    {name} [option] FILE...
+
+Copyright (c) {year} Riley Ava
+\"\"\"
+"""
         FM.create_file(arg)
 
     FM.finish()
