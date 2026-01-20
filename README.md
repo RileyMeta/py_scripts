@@ -62,8 +62,8 @@ int main(int argc, char *argv[]) {
 ### Py
 ```python
 # -*- coding: utf-8 -*-
-\"\"\"
-{name}
+"""
+Filename
 ==============
 
 Brief desription of the program.
@@ -84,7 +84,7 @@ Usage:
     {name} [option] FILE...
 
 Copyright (c) {year} Riley Ava
-\"\"\"
+"""
 ```
 ### Makefile
 ```make
