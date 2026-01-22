@@ -63,9 +63,6 @@ install() {
 
     for prog in "${PROGRAMS[@]}"; do
         if [ -f "$ROOT_DIR/$prog" ]; then
-            # Make the original file executable
-            chmod +x "$ROOT_DIR/$prog"
-
             # Create symlink name (remove .py extension)
             link_name=$(basename "$prog" .py)
 
@@ -74,6 +71,7 @@ install() {
 
             # Create symlink
             ln -s "$ROOT_DIR/$prog" ~/.local/bin/"$link_name"
+            chmod a+x ~/.local/bin/"$link_name"
             echo -e "${GREEN}✓ Installed $link_name${RESET}"
         else
             echo -e "${RED}✗ $prog not found${RESET}"
