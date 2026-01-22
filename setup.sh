@@ -10,6 +10,8 @@ RESET='\033[0m' # No Color
 
 # Array of programs managed by this script
 PROGRAMS=("cproject.py" "ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "random_meme.py")
+SHEBANG='#!/home/'
+SHEBANG=$SHEBANG"$(whoami)/.local/bin/py_scripts/venv/bin/python3"
 
 init_venv() {
     echo -e "${BLUE}Setting up virtual environment...${RESET}"
@@ -22,28 +24,26 @@ init_venv() {
         echo -e "${GREEN}✓ Virtual environment already exists${RESET}"
     fi
 
-    # Activate virtual environment
-    source venv/bin/activate
+    command="${SHEBANG#??}"
+    if ! $command -m pip list | grep backend; then
+        # Activate virtual environment
+        source venv/bin/activate
 
-    echo -e "${BLUE}Installing backend module...${RESET}"
+        echo -e "${BLUE}Installing backend module...${RESET}"
 
-    # Install the backend module in editable mode
-    pip install ./backend
+        # Install the backend module in editable mode
+        pip install ./backend
+    fi
 
     echo -e "${GREEN}✓ Setup complete!${RESET}"
     echo -e "${BLUE}To activate the virtual environment, run:${RESET}"
     echo -e "  source venv/bin/activate"
-
-    fix_venv_path
 }
 
 fix_venv_path() {
-    shebang='#!/home/'
-    shebang=$shebang"$(whoami)/.local/bin/py_scripts/venv/bin/python3"
-
     for prog in "${PROGRAMS[@]}"; do
-        if ! grep -q "$shebang" "$prog"; then
-            echo "$shebang" > temp_file
+        if ! grep -q "$SHEBANG" "$prog"; then
+            echo "$SHEBANG" > temp_file
             cat "$prog" >> temp_file
             mv temp_file "$prog"
         fi
@@ -148,6 +148,7 @@ main() {
     fi
 
     init_venv
+    fix_venv_path
     return 0
 }
 
