@@ -3,6 +3,7 @@
 set -euo pipefail
 
 # Colors for output
+YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
@@ -10,8 +11,16 @@ RESET='\033[0m' # No Color
 
 # Array of programs managed by this script
 PROGRAMS=("cproject.py" "ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "random_meme.py")
+USER="$(whoami)"
+INSTALL_DIR=".local/bin/"
 SHEBANG='#!/home/'
-SHEBANG=$SHEBANG"$(whoami)/.local/bin/py_scripts/venv/bin/python3"
+SHEBANG=$SHEBANG"$USER/$INSTALL_DIR/py_scripts/venv/bin/python3"
+
+delete_venv() {
+    venv="/home/$USER/$INSTALL_DIR/py_scripts/venv/"
+    echo -e "  ${YELLOW}ˣPurging: $venv${RESET}"
+    rm -rf "$venv"
+}
 
 init_venv() {
     echo -e "${BLUE}Setting up virtual environment...${RESET}"
@@ -24,6 +33,7 @@ init_venv() {
         echo -e "${GREEN}✓ Virtual environment already exists${RESET}"
     fi
 
+    # Check if the venv has the pip package 'backend' installed
     command="${SHEBANG#??}"
     if ! $command -m pip list | grep backend; then
         # Activate virtual environment
@@ -102,6 +112,7 @@ help_menu() {
 Setup and install the py_scripts as programs.
 
       install    change permissions and install with symlinks
+      clean      delete the virtual environment and create a new one
 
       --help     display this help information and exit
       --version  display version information and exit
@@ -139,6 +150,8 @@ main() {
             elif [[ "$arg" == "install" ]]; then
                 install
                 return 0
+            elif [[ "$arg" == "clean" ]]; then
+                delete_venv
             else
                 echo -e "$arg is not recognized."
                 usage
