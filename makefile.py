@@ -1,3 +1,4 @@
+#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 Makefile
@@ -9,7 +10,7 @@ Full description of the program with technical information about the process.
 
 Author: Riley Ava
 Created: 20-01-2026
-Last Modified: 20-01-2026
+Last Modified: 21-01-2026
 Version: 1.0.0
 License: MPL 2.0
 Repository: https://github.com/RileyMeta/py_scripts
@@ -76,6 +77,9 @@ if __name__ == "__main__":
     FM = FileMaker("makefile", "")
     for arg in args:
         name: str = arg
+        if "/" in name:
+            pieces = name.split("/")
+            name = pieces[len(pieces) - 1]
 
         FM.file_template = f"""TARGET = {name}
 SRC := $(wildcard src/*.c)

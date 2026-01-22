@@ -1,3 +1,4 @@
+#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 Htouch
@@ -9,7 +10,7 @@ Create a C Header file with the basic ifndef and define flags set based on the n
 
 Author: Riley Ava
 Created: 20-01-2026
-Last Modified: 20-01-2026
+Last Modified: 21-01-2026
 Version: 1.0.0
 License: MPL 2.0
 Repository: https://github.com/RileyMeta/py_scripts
@@ -81,6 +82,10 @@ if __name__ == "__main__":
             arg = arg.replace(extension, "")
 
         name: str = arg.upper()
+        if "/" in name:
+            pieces = name.split("/")
+            name = pieces[len(pieces) - 1]
+
         FM.file_template = f"""#ifndef {name}_H
 #define {name}_H
 

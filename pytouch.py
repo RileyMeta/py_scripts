@@ -1,3 +1,4 @@
+#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 Pytouch
@@ -86,6 +87,10 @@ if __name__ == "__main__":
         name: str = arg
         if arg.endswith(extension):
             name = name.replace(extension, "")
+
+        if "/" in name:
+            pieces = name.split("/")
+            name = pieces[len(pieces) - 1]
 
         FM.file_template = f"""# -*- coding: utf-8 -*-
 \"\"\"

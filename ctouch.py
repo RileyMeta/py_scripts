@@ -1,3 +1,4 @@
+#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 Ctouch
