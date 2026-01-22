@@ -74,10 +74,10 @@ install() {
     echo -e "${BLUE}Installing programs to ~/.local/bin...${RESET}"
 
     for prog in "${PROGRAMS[@]}"; do
-        if [ -f "$SETUP_DIR/$prog" ]; then
-            # Make the original file executable
-            chmod +x "$SETUP_DIR/$prog"
+        # Make the original file executable
+        chmod +x "$SETUP_DIR/$prog"
 
+        if [ -f "$SETUP_DIR/$prog" ]; then
             # Create symlink name (remove .py extension)
             link_name=$(basename "$prog" .py)
             echo "$link_name"
