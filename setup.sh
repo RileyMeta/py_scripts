@@ -9,12 +9,13 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 RESET='\033[0m' # No Color
 
+# Folders ends with no slash to make it easier to combine for later steps
 # Array of programs managed by this script
 PROGRAMS=("cproject.py" "ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "random_meme.py")
 USER="$(whoami)"
-INSTALL_DIR=".local/bin/"
-SHEBANG='#!/home/'
-SHEBANG=$SHEBANG"$USER/$INSTALL_DIR/py_scripts/venv/bin/python3"
+INSTALL_DIR=".local/bin"
+SHEBANG='#!/home'
+SHEBANG=$SHEBANG"/$USER/$INSTALL_DIR/py_scripts/venv/bin/python3"
 
 delete_venv() {
     venv="/home/$USER/$INSTALL_DIR/py_scripts/venv/"
@@ -124,7 +125,7 @@ EOF
 
 version_menu() {
     cat <<EOF
-py_scripts setup script 1.0.0
+py_scripts setup script 1.1.0
 Copyright (C) 2026 Riley Ava.
 License MPL2.0: Mozilla Public License 2.0 <https://www.mozilla.org/en-US/MPL/2.0/>.
 This is free software: you are free to change and redistribute it.
