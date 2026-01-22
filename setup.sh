@@ -9,7 +9,7 @@ RED='\033[0;31m'
 RESET='\033[0m' # No Color
 
 # Array of programs managed by this script
-PROGRAMS=("ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "cproject.py" "random_meme.py")
+PROGRAMS=("cproject.py" "ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "random_meme.py")
 
 init_venv() {
     echo -e "${BLUE}Setting up virtual environment...${RESET}"
@@ -54,24 +54,28 @@ fix_venv_path() {
 
 install() {
     # Get the absolute path to the root directory
-    ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    ROOT_DIR="/home/$(whoami)"
+    SETUP_DIR="$ROOT_DIR/.local/bin/py_scripts"
 
     # Ensure ~/.local/bin exists
-    mkdir -p ~/.local/bin
+    mkdir -p $ROOT_DIR/.local/bin
 
     echo -e "${BLUE}Installing programs to ~/.local/bin...${RESET}"
 
     for prog in "${PROGRAMS[@]}"; do
-        if [ -f "$ROOT_DIR/$prog" ]; then
+        if [ -f "$SETUP_DIR/$prog" ]; then
+            # Make the original file executable
+            chmod +x "$SETUP_DIR/$prog"
+
             # Create symlink name (remove .py extension)
             link_name=$(basename "$prog" .py)
+            echo "$link_name"
 
             # Remove existing symlink if it exists
-            rm -f ~/.local/bin/"$link_name"
+            rm -f "$ROOT_DIR/.local/bin/$link_name"
 
             # Create symlink
-            ln -s "$ROOT_DIR/$prog" ~/.local/bin/"$link_name"
-            chmod a+x ~/.local/bin/"$link_name"
+            ln -s "$SETUP_DIR/$prog" "$ROOT_DIR/.local/bin/$link_name"
             echo -e "${GREEN}✓ Installed $link_name${RESET}"
         else
             echo -e "${RED}✗ $prog not found${RESET}"
