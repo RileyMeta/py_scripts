@@ -19,6 +19,9 @@ python3 -m venv venv
 source venv/bin/activate
 pip install ./backend
 ```
+> [!note]
+> There is either a bug or some intended behavior I don't know about that prevents these scripts from working if you pass the editable (`-e`) flag.
+
 followed by a check to ensure they all use the same / correct virtual environment 'shebang (`#!`)' when running.
 ```sh
 for prog in "${PROGRAMS[@}"; do

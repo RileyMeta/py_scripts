@@ -9,7 +9,7 @@ RED='\033[0;31m'
 RESET='\033[0m' # No Color
 
 # Array of programs managed by this script
-PROGRAMS=("ctouch.py" "htouch.py" "makefile.py" "pytouch.py")
+PROGRAMS=("ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "cproject.py" "random_meme.py")
 
 init_venv() {
     echo -e "${BLUE}Setting up virtual environment...${RESET}"

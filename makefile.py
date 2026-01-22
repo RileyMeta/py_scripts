@@ -76,9 +76,13 @@ if __name__ == "__main__":
     FM = FileMaker("makefile", "")
     for arg in args:
         name: str = arg
+
         if "/" in name:
+            skip: int = 1
+            if name.endswith("/"):
+                skip += 1
             pieces = name.split("/")
-            name = pieces[len(pieces) - 1]
+            name = pieces[len(pieces) - skip]
 
         FM.file_template = f"""TARGET = {name}
 SRC := $(wildcard src/*.c)
@@ -102,6 +106,6 @@ clean:
 run: $(TARGET)
 	./$(TARGET)
 """
-        FM.create_file("Makefile")
+        FM.create_file(f"{arg}/Makefile")
 
     FM.finish()

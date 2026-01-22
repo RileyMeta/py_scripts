@@ -1,4 +1,5 @@
 from pathlib import Path
+from getpass import getpass
 
 class Config:
     VERBOSE: bool = False
@@ -32,17 +33,22 @@ class FileMaker:
         prompt: str = f"{filename} already exists.\n"
         prompt += "Would you like to overwrite it?\n"
 
-        while True:
-            print(prompt)
-            response: str = input("[Y]es or [N]o: ").lower()
+        try:
+            while True:
+                print(prompt)
+                response: str = input("[Y]es or [N]o: ").lower()
 
-            if response in ["y", "yes"]:
-                return True
-            elif response in ["n", "no"]:
-                return False
-            else:
-                print(f"{repsonse} is not recognized.")
-                continue
+                if response in ["y", "yes"]:
+                    return True
+                elif response in ["n", "no"]:
+                    return False
+                else:
+                    print(f"{repsonse} is not recognized.")
+                    getpass("Press [enter] to continue")
+                    continue
+        except KeyboardInterrupt as e:
+            print("\nOperation was cancelled.")
+            sys.exit(-1)
 
     def clean_filename(self, filename: str) -> str:
         """
@@ -58,7 +64,7 @@ class FileMaker:
         full_fb: str = Path(f"{filename}{self.extension}")
 
         if full_name.is_dir():
-            print(f"{full_name} is a directory, please provide a name for the file.")
+            print(f"{self.name}: {full_name} is a directory, please provide a name for the file.")
             return None
 
         if full_name.exists() or full_fb.exists():
@@ -106,7 +112,7 @@ class FileMaker:
         """
         successes: list = Config.SUCCESSES
         success_len: int = len(successes)
-        print(f"{success_len} file(s) created.")
+        print(f"{self.name}: {success_len} file(s) created.")
 
         if Config.VERBOSE:
             for a, file in enumerate(successes, 1):
