@@ -36,7 +36,7 @@ init_venv() {
 
     # Check if the venv has the pip package 'backend' installed
     command="${SHEBANG#??}"
-    if ! $command -m pip list | grep backend; then
+    if ! $command -m pip list | grep -q backend; then
         # Activate virtual environment
         source venv/bin/activate
 
@@ -63,13 +63,38 @@ fix_venv_path() {
     echo -e "${GREEN}✓ Shebangs updated!${RESET}"
 }
 
+fix_delete_autocomplete() {
+    local rc="$HOME/.bashrc"
+
+    # while [ true ]; do
+    if ! grep -q "_delete_complete()" "$rc"; then
+        cat <<"EOF" >> ~/.bashrc
+
+_delete_complete() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+    local trash_dir="$HOME/.local/share/Trash/files"
+
+    # If the previous word was 'restore', complete with trash filenames
+    if [[ "$prev" == "restore" ]] || [[ "$prev" == "-r" ]]; then
+        if [[ -d "$trash_dir" ]]; then
+            COMPREPLY=( $(cd "$trash_dir" && compgen -f -- "$cur") )
+        fi
+    fi
+}
+
+complete -F _delete_complete delete
+EOF
+    fi
+}
+
 install() {
     # Get the absolute path to the root directory
     ROOT_DIR="/home/$(whoami)"
     SETUP_DIR="$ROOT_DIR/.local/bin/py_scripts"
 
     # Ensure ~/.local/bin exists
-    mkdir -p $ROOT_DIR/.local/bin
+    mkdir -p "$ROOT_DIR/.local/bin"
 
     echo -e "${BLUE}Installing programs to ~/.local/bin...${RESET}"
 
@@ -138,7 +163,6 @@ EOF
 
 main() {
     declare -a argv="$*"
-    argc="${#argv[@]}"
 
     if [[ ! -z "$argv" ]]; then
         for arg in "${argv[@]}"; do
@@ -163,6 +187,7 @@ main() {
 
     init_venv
     fix_venv_path
+    fix_delete_autocomplete
     return 0
 }
 
