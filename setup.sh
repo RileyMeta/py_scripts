@@ -66,9 +66,10 @@ fix_venv_path() {
 fix_delete_autocomplete() {
     local rc="$HOME/.bashrc"
 
-    # while [ true ]; do
-    if ! grep -q "_delete_complete()" "$rc"; then
-        cat <<"EOF" >> ~/.bashrc
+    while [ true ]; do
+        if ! grep -q "_delete_complete()" "$rc"; then
+            echo -e "${RED}Delete auto-complete function is not found${RESET}"
+            cat <<"EOF" >> ~/.bashrc
 
 _delete_complete() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -85,7 +86,14 @@ _delete_complete() {
 
 complete -F _delete_complete delete
 EOF
-    fi
+            echo -e "  ${YELLOW}Function added to $rc${RESET}"
+            continue
+        else
+            echo -e "${GREEN}Delete auto-complete function was found${RESET}"
+            source "$rc"
+            break
+        fi
+    done
 }
 
 install() {
