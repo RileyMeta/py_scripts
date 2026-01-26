@@ -170,28 +170,29 @@ EOF
 
 
 main() {
-    declare -a argv="$*"
+    declare -a argv=("$@")
+    local argc="${#argv[@]}"
 
-    if [[ ! -z "$argv" ]]; then
-        for arg in "${argv[@]}"; do
-            if [[ "$arg" == "--help" ]]; then
+    for ((i=0; i<argc; i++)); do
+        local arg="${argv[i]}"
+
+        case "$arg" in
+            "--help")
                 help_menu
-                return 0
-            elif [[ "$arg" == "--version" || "$arg" == "-v" ]]; then
+                return 0 ;;
+            "--version"|"-v")
                 version_menu
-                return 0
-            elif [[ "$arg" == "install" ]]; then
-                install
-                return 0
-            elif [[ "$arg" == "clean" ]]; then
-                delete_venv
-            else
-                echo -e "$arg is not recognized."
+                return 0 ;;
+            "install")
+                install 
+                return 0 ;;
+            "clean")
+                delete_venv ;;
+            *)
                 usage
-                return 1
-            fi
-        done
-    fi
+                return 1 ;;
+        esac
+    done
 
     init_venv
     fix_venv_path

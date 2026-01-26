@@ -1,5 +1,5 @@
 # PyScripts
-These are all scripts that mimic the touch function in unix, but also create a templated file based on the type.
+These are all custom scripts that I use in my dialy life, mimicking the touch function in unix, creating templated file based on the type, and create projects, delete files in a more robust way and more.
 # Full Install
 Complete script to setup and install at the same time
 ```sh
@@ -42,6 +42,7 @@ sh setup.sh install
 - Htouch: Create a formatted header file
 - Pytouch: Create a python file with basic info
 - Makefile: Create a Makefile for a C project
+- Delete: Delete files with the OpenDesktop standard Trash
 
 ## Templates
 These are the actual templates that are used for each touch program.
@@ -112,4 +113,8 @@ clean:
 # Run rule
 run: $(TARGET)
 	./$(TARGET)
+```
+### Delete
+```python
+    # TODO: Add shit her
 ```
