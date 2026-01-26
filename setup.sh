@@ -14,20 +14,19 @@ RESET='\033[0m' # No Color
 PROGRAMS=("cproject.py" "ctouch.py" "htouch.py" "makefile.py" "pytouch.py" "random_meme.py")
 USER="$(whoami)"
 INSTALL_DIR=".local/bin"
-SHEBANG='#!/home'
-SHEBANG=$SHEBANG"/$USER/$INSTALL_DIR/py_scripts/venv/bin/python3"
+VENV="/home/$USER/$INSTALL_DIR/py_scripts/venv"
+SHEBANG='#!'"$VENV/bin/python3"
 
 delete_venv() {
-    venv="/home/$USER/$INSTALL_DIR/py_scripts/venv/"
     echo -e "  ${YELLOW}ˣPurging: $venv${RESET}"
-    rm -rf "$venv"
+    rm -rf "$VENV"
 }
 
 init_venv() {
     echo -e "${BLUE}Setting up virtual environment...${RESET}"
 
     # Create virtual environment if it doesn't exist
-    if [ ! -d "venv" ]; then
+    if [ ! -d "$VENV" ]; then
         python3 -m venv venv
         echo -e "${GREEN}✓ Virtual environment created${RESET}"
     else
