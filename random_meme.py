@@ -1,3 +1,4 @@
+#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 random_meme
@@ -10,8 +11,8 @@ be randomly played when the programm is called.
 
 Author: Riley Ava
 Created: 21/01/2026
-Last Modified: 21/01/2026
-Version: 1.0.0
+Last Modified: 26/01/2026
+Version: 1.1.0
 License: MPL 2.0
 Repository: https://github.com/RileyMeta/random_meme
 
@@ -32,14 +33,18 @@ from random import randrange
 
 class Config:
     VERBOSE: bool = False
+    REPLAY: bool = False
     PLAYER: str = "vlc"
 
 class RandomMeme:
     def __init__(self, directory: str):
         self.directory: str = directory
         self.meme_list: list = []
-        self.populate_list()
         self.video_played: str = ""
+        self.tmp_file: str = "/tmp/meme"
+        self.last_video: str = ""
+        self.get_last()
+        self.populate_list()
 
     def populate_list(self):
         extensions: tuple = (".mp4", ".mov")
@@ -51,12 +56,45 @@ class RandomMeme:
                 if str(file).endswith(extensions):
                     self.meme_list.append(file)
 
+    def cache_video(self):
+        path: str = str(self.tmp_file)
+
+        if not self.video_played:
+            return None
+
+        try:
+            with open(path, 'w') as f:
+                f.write(str(self.video_played))
+
+        except Exception as err:
+            print(f"Error [cache_video]: {err}")
+
+    def get_last(self):
+        path: str = str(self.tmp_file)
+
+        try:
+            with open(path, 'r') as f:
+                self.last_video = f.readline()
+
+        except FileNotFoundError:
+            self.last_video = ""
+
+        except Exception as err:
+            print(f"Error [get_last]: {err}")
+
     def play_random_video(self):
         memes_len: int = len(self.meme_list)
         video = randrange(0, memes_len)
-        self.video_played = self.meme_list[video]
+
+        if not Config.REPLAY:
+            self.video_played = self.meme_list[video]
+        else:
+            self.video_played = self.last_video
         self.play_video(self.video_played)
-        vid_path = Path(self.video_played)
+
+        vid_path = Path(self.video_played).expanduser().resolve()
+        self.cache_video()
+
         print(f"Video Played: {vid_path}")
 
     def play_video(self, video: str):
@@ -73,6 +111,7 @@ def help_menu():
     print("""Play a random meme from a specific folder.
 
   -p, --player   specify a video player (default: VLC)
+  -r, --replay   replay the most recent video
 
       --help     display this help information and exit
   -v, --version  display version information and exit
@@ -94,8 +133,8 @@ if __name__ == "__main__":
     meme_dir: str = f"/home/{user}/Videos/memes"
 
     try:
-        short_opts: str = "Vvp:"
-        long_opts: list = ["version", "help", "verbose", "player"]
+        short_opts: str = "Vvrp:"
+        long_opts: list = ["version", "help", "verbose", "replay", "player="]
 
         opts, args = getopt.getopt(sys.argv[1:], short_opts, long_opts)
 
@@ -111,10 +150,10 @@ if __name__ == "__main__":
         elif opt in ("-V", "--version"):
             version_menu()
             sys.exit(0)
-        elif opt in ("-v", "--verbose"):
-            Config.VERBOSE = True
         elif opt in ("-p", "--player"):
             Config.PLAYER = arg
+        elif opt in ("-r", "--replay"):
+            Config.REPLAY = True
 
     if args:
         meme_dir = args[0]
