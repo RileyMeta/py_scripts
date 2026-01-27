@@ -47,17 +47,29 @@ class RandomMeme:
         self.get_last()
         self.populate_list()
 
+    def program_exists(self, program: str, search_prog: str) -> bool:
+        command: list = []
+        if search_prog == "command":
+            command = ["bash", "-c", "command", "-v"]
+        else:
+            command = ["which"]
+
+        command.append(program)
+
+        try:
+            subprocess.run(command, check=True,
+                           stderr=subprocess.DEVNULL,
+                           stdout=subprocess.DEVNULL)
+            return True
+
+        except subprocess.CalledProcessError:
+            return False
+
     def check_players(self):
         for player in Config.PLAYERS:
-            try:
-                subprocess.run(["bash", "-c", "command", "-v", player],
-                               check=True, stderr=subprocess.DEVNULL,
-                               stdout=subprocess.DEVNULL)
+            if self.program_exists(player, "command") or self.program_exists(player, "which"):
                 Config.PLAYER = player
                 break
-
-            except subprocess.CalledProcessError:
-                continue
 
         if not Config.PLAYER or Config.PLAYER == "":
             print(f"No suitable video player was found...")
