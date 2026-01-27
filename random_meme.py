@@ -20,7 +20,7 @@ Requirements:
     - Python 3.10 (or newer)
 
 Usage:
-    random_meme [option] FILE...
+    random_meme [option] <directory>
 
 Copyright (c) 2026 Riley Ava
 """
@@ -33,7 +33,8 @@ from random import randrange
 
 class Config:
     REPLAY: bool = False
-    PLAYER: str = "vlc"
+    PLAYER: str = ""
+    PLAYERS: list = ["vlc", "mpv", "smplayer", "mplayer"]
 
 class RandomMeme:
     def __init__(self, directory: str):
@@ -42,8 +43,29 @@ class RandomMeme:
         self.video_played: str = ""
         self.tmp_file: str = "/tmp/meme"
         self.last_video: str = ""
+        self.check_players()
         self.get_last()
         self.populate_list()
+
+    def check_players(self):
+        for player in Config.PLAYERS:
+            try:
+                subprocess.run(["bash", "-c", "command", "-v", player],
+                               check=True, stderr=subprocess.DEVNULL,
+                               stdout=subprocess.DEVNULL)
+                Config.PLAYER = player
+                break
+
+            except subprocess.CalledProcessError:
+                continue
+
+        print(f"No suitable video player was found...")
+        last: int = len(Config.PLAYERS)
+
+        for a, player in enumerate(Config.PLAYERS):
+            print(f"{player}{", " if a != (last - 1) else "\n"}", end="")
+
+        sys.exit(-1)
 
     def populate_list(self):
         extensions: tuple = (".mp4", ".mov")
@@ -118,7 +140,7 @@ def help_menu():
 Report bugs to: <https://github.com/RileyMeta/random_meme/pulls>""")
 
 def version_menu():
-    print("""random_meme (random meme player) 1.0.0
+    print("""random_meme (random meme player) 1.1.0
 Copyright (C) 2026 Riley Ava.
 License MPL2.0: Mozilla Public License 2.0 <https://www.mozilla.org/en-US/MPL/2.0/>.
 This is free software: you are free to change and redistribute it.
