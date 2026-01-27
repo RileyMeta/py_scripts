@@ -32,7 +32,6 @@ from pathlib import Path
 from random import randrange
 
 class Config:
-    VERBOSE: bool = False
     REPLAY: bool = False
     PLAYER: str = "vlc"
 
@@ -133,8 +132,8 @@ if __name__ == "__main__":
     meme_dir: str = f"/home/{user}/Videos/memes"
 
     try:
-        short_opts: str = "Vvrp:"
-        long_opts: list = ["version", "help", "verbose", "replay", "player="]
+        short_opts: str = "Vrp:"
+        long_opts: list = ["version", "help", "replay", "player="]
 
         opts, args = getopt.getopt(sys.argv[1:], short_opts, long_opts)
 
