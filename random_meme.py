@@ -59,13 +59,14 @@ class RandomMeme:
             except subprocess.CalledProcessError:
                 continue
 
-        print(f"No suitable video player was found...")
-        last: int = len(Config.PLAYERS)
+        if not Config.PLAYER or Config.PLAYER == "":
+            print(f"No suitable video player was found...")
+            last: int = (len(Config.PLAYERS) - 1)
 
-        for a, player in enumerate(Config.PLAYERS):
-            print(f"{player}{", " if a != (last - 1) else "\n"}", end="")
+            for a, player in enumerate(Config.PLAYERS):
+                print(f"{player}{", " if a != last else "\n"}", end="")
 
-        sys.exit(-1)
+            sys.exit(-1)
 
     def populate_list(self):
         extensions: tuple = (".mp4", ".mov")
