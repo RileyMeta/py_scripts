@@ -1,4 +1,3 @@
-#!/home/riley/.local/bin/py_scripts/venv/bin/python3
 # -*- coding: utf-8 -*-
 """
 random_meme
@@ -80,10 +79,21 @@ class RandomMeme:
 
             sys.exit(-1)
 
+    def folder_exists(self, directory: str) -> bool:
+        folder_dir: Path = Path(directory).expanduser().resolve()
+
+        if folder_dir.exists():
+            return True
+        return False
+
     def populate_list(self):
         extensions: tuple = (".mp4", ".mov")
         tmpdir = self.directory
         directory = Path(tmpdir)
+
+        if not self.folder_exists(self.directory):
+            print(f"{self.directory} folder does not exist.")
+            sys.exit(-1)
 
         for file in directory.iterdir():
             if file.is_file():
